@@ -1,0 +1,22 @@
+#include <stdio.h>
+
+int main() {
+    int mem[5] = {100, 500, 200, 300, 600};
+    int proc[4] = {212, 417, 112, 426};
+    int i, j, best, index;
+
+    for (i = 0; i < 4; i++) {
+        best = 9999; index = -1;
+        for (j = 0; j < 5; j++) {
+            if (mem[j] >= proc[i] && mem[j] < best) {
+                best = mem[j];
+                index = j;
+            }
+        }
+        if (index != -1) {
+            printf("Process %d allocated to block %d\n", i+1, index+1);
+            mem[index] -= proc[i];
+        }
+    }
+    return 0;
+}

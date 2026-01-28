@@ -1,0 +1,20 @@
+#include <stdio.h>
+
+int main() {
+    int pages[7] = {7,0,1,2,0,3,0};
+    int frame[3] = {-1,-1,-1};
+    int i, j, faults = 0;
+
+    for (i = 0; i < 7; i++) {
+        int found = 0;
+        for (j = 0; j < 3; j++)
+            if (frame[j] == pages[i]) found = 1;
+
+        if (!found) {
+            frame[faults % 3] = pages[i];
+            faults++;
+        }
+    }
+    printf("Page Faults: %d\n", faults);
+    return 0;
+}

@@ -1,0 +1,14 @@
+#include <stdio.h>
+
+int main() {
+    int blocks[5], i;
+    printf("Enter linked blocks:\n");
+    for (i = 0; i < 5; i++)
+        scanf("%d", &blocks[i]);
+
+    printf("File allocation:\n");
+    for (i = 0; i < 5; i++)
+        printf("%d -> ", blocks[i]);
+    printf("NULL\n");
+    return 0;
+}

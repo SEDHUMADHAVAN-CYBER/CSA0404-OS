@@ -1,0 +1,49 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+#include <sys/ipc.h>
+#include <sys/msg.h>
+#include <unistd.h>
+
+#define MAX_TEXT 512
+
+struct message {
+    long msg_type;
+    char text[MAX_TEXT];
+};
+
+int main() {
+    struct message msg;
+    int msgid;
+    key_t key = 1234;
+
+    msgid = msgget(key, 0666 | IPC_CREAT);
+    if (msgid == -1) {
+        perror("msgget failed");
+        exit(EXIT_FAILURE);
+    }
+
+    msg.msg_type = 1;
+    strcpy(msg.text, "Hello from process!");
+
+    if (msgsnd(msgid, &msg, sizeof(msg.text), 0) == -1) {
+        perror("msgsnd failed");
+        exit(EXIT_FAILURE);
+    }
+
+    printf("Message sent: %s\n", msg.text);
+
+    if (msgrcv(msgid, &msg, sizeof(msg.text), 1, 0) == -1) {
+        perror("msgrcv failed");
+        exit(EXIT_FAILURE);
+    }
+
+    printf("Message received: %s\n", msg.text);
+
+    if (msgctl(msgid, IPC_RMID, NULL) == -1) {
+        perror("msgctl failed");
+        exit(EXIT_FAILURE);
+    }
+
+    return 0;
+}

@@ -1,0 +1,21 @@
+#include <stdio.h>
+
+int main() {
+    char user[2][2][20];
+    int i, j;
+
+    for (i = 0; i < 2; i++) {
+        printf("User %d:\n", i+1);
+        for (j = 0; j < 2; j++) {
+            printf("Enter file name: ");
+            scanf("%s", user[i][j]);
+        }
+    }
+
+    for (i = 0; i < 2; i++) {
+        printf("User %d files:\n", i+1);
+        for (j = 0; j < 2; j++)
+            printf("%s\n", user[i][j]);
+    }
+    return 0;
+}

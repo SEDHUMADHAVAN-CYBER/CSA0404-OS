@@ -1,0 +1,47 @@
+#include <stdio.h>
+#include <sys/stat.h>
+#include <pwd.h>
+#include <grp.h>
+
+int main(int argc, char *argv[]) {
+    struct stat fileStat;
+    struct passwd *pw;
+    struct group *gr;
+
+    if (argc != 2) {
+        printf("Usage: %s <filename>\n", argv[0]);
+        return 1;
+    }
+
+    if (stat(argv[1], &fileStat) < 0) {
+        perror("stat");
+        return 1;
+    }
+
+    /* Owner and Group */
+    pw = getpwuid(fileStat.st_uid);
+    gr = getgrgid(fileStat.st_gid);
+
+    printf("File Name : %s\n", argv[1]);
+    printf("Owner     : %s\n", pw->pw_name);
+    printf("Group     : %s\n\n", gr->gr_name);
+
+    printf("File Permissions:\n");
+
+    printf("Owner  : ");
+    printf((fileStat.st_mode & S_IRUSR) ? "r" : "-");
+    printf((fileStat.st_mode & S_IWUSR) ? "w" : "-");
+    printf((fileStat.st_mode & S_IXUSR) ? "x\n" : "-\n");
+
+    printf("Group  : ");
+    printf((fileStat.st_mode & S_IRGRP) ? "r" : "-");
+    printf((fileStat.st_mode & S_IWGRP) ? "w" : "-");
+    printf((fileStat.st_mode & S_IXGRP) ? "x\n" : "-\n");
+
+    printf("Others : ");
+    printf((fileStat.st_mode & S_IROTH) ? "r" : "-");
+    printf((fileStat.st_mode & S_IWOTH) ? "w" : "-");
+    printf((fileStat.st_mode & S_IXOTH) ? "x\n" : "-\n");
+
+    return 0;
+}

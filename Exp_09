@@ -1,0 +1,23 @@
+#include <stdio.h>
+#include <sys/ipc.h>
+#include <sys/shm.h>
+#include <unistd.h>
+
+int main() {
+    int shmid;
+    char *shm;
+
+    shmid = shmget(IPC_PRIVATE, 1024, 0666 | IPC_CREAT);
+    shm = (char *)shmat(shmid, NULL, 0);
+
+    if (fork() == 0) {
+        printf("Child reads: %s\n", shm);
+        shmdt(shm);
+    } else {
+        sprintf(shm, "Hello from Parent");
+        sleep(1);
+        shmdt(shm);
+        shmctl(shmid, IPC_RMID, NULL);
+    }
+    return 0;
+}

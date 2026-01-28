@@ -1,0 +1,13 @@
+#include <stdio.h>
+
+int main() {
+    int index[5], i;
+    printf("Enter 5 block numbers:\n");
+    for (i = 0; i < 5; i++)
+        scanf("%d", &index[i]);
+
+    printf("File blocks:\n");
+    for (i = 0; i < 5; i++)
+        printf("%d ", index[i]);
+    return 0;
+}
